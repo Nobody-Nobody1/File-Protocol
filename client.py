@@ -1,5 +1,13 @@
 import os
 import struct
+import socket
+
+def send_to_server(data):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect(("127.0.0.1", 5000))  # connect to server
+    sock.sendall(data)                 # send all frames
+    sock.close()
+
 
 def build_metadata_frame(filename):
     name_bytes = filename.encode("utf-8")
@@ -56,4 +64,4 @@ if __name__ == "__main__":
     # Add end frame
     output += build_end_frame()
 
-    print(output)
+    send_to_server(output)
